@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SplitBillApp.MainPage"
+             BackgroundColor="White">
+
+    <ContentPage.Resources>
+        <Color x:Key="SectionsColor">#E8EAF6</Color>
+        <Color x:Key="PrimaryColor">#FF4081</Color>
+        <Color x:Key="AccentColor">#00BCD4</Color>
+        <Color x:Key="TextColor">#212121</Color>
+        <Color x:Key="PinkColor">#FF66B2</Color>
+    </ContentPage.Resources>
+
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Color="#FFC1E3" Offset="0.0"/>
+            <GradientStop Color="#FF4081" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+
+    <ScrollView>
+        <Grid Padding="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Panel Box -->
+            <Frame Grid.Row="0"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   HasShadow="True"
+                   Padding="20"
+                   BorderColor="White">
+
+                <VerticalStackLayout Spacing="15">
+                    <!-- Total Payment Section -->
+                    <Label Text="Total Payment per Person"
+                           FontAttributes="Bold"
+                           FontSize="18"
+                           TextColor="{StaticResource PrimaryColor}"
+                           HorizontalOptions="Center"/>
+
+                    <Label x:Name="lblTotal"
+                           FontAttributes="Bold"
+                           FontSize="40"
+                           HorizontalTextAlignment="Center"
+                           Text="0.00"
+                           TextColor="{StaticResource TextColor}"/>
+
+                    <BoxView HeightRequest="1"
+                             BackgroundColor="{StaticResource AccentColor}"
+                             HorizontalOptions="FillAndExpand"/>
+
+                    <!-- Subtotal and Tip Info -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Subtotal Section -->
+                        <VerticalStackLayout Grid.Column="0"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center">
+                            <Label Text="SUBTOTAL"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextColor}"/>
+                            <Label x:Name="lblSubTotal"
+                                   FontAttributes="Bold"
+                                   FontSize="28"
+                                   Text="0.00"
+                                   TextColor="{StaticResource TextColor}"/>
+                        </VerticalStackLayout>
+
+                        <!-- Divider -->
+                        <BoxView Grid.Column="1"
+                                 WidthRequest="1"
+                                 Color="{StaticResource AccentColor}"
+                                 VerticalOptions="FillAndExpand"/>
+
+                        <!-- Tip Section -->
+                        <VerticalStackLayout Grid.Column="2"
+                                             HorizontalOptions="Center"
+                                             VerticalOptions="Center">
+                            <Label Text="TIP"
+                                   FontSize="16"
+                                   TextColor="{StaticResource TextColor}"/>
+                            <Label x:Name="lblTip"
+                                   FontAttributes="Bold"
+                                   FontSize="28"
+                                   Text="0.00"
+                                   TextColor="{StaticResource TextColor}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Split and Tip Selection Section -->
+            <Frame Grid.Row="1"
+                   BackgroundColor="White"
+                   CornerRadius="20"
+                   HasShadow="True"
+                   Padding="20"
+                   Margin="0,20,0,0"
+                   BorderColor="White">
+
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Enter total payment:"
+                           FontSize="16"
+                           TextColor="{StaticResource TextColor}"/>
+                    <Entry x:Name="txtBill"
+                           BackgroundColor="{StaticResource SectionsColor}"
+                           HeightRequest="50"
+                           TextColor="{StaticResource TextColor}"
+                           Placeholder="Enter amount"
+                           Keyboard="Numeric"
+                           Completed="txtBill_Completed"/>
+
+                    <!-- Button Options for Tip Method -->
+                    <Label Text="Select Tip Method:"
+                           FontSize="16"
+                           TextColor="{StaticResource TextColor}"/>
+
+                    <HorizontalStackLayout Spacing="10">
+                        <Button Text="Slider"
+                                x:Name="btnSlider"
+                                WidthRequest="90"
+                                TextColor="White"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="BtnSlider_Clicked"/>
+                        <Button Text="Choose"
+                                x:Name="btnTipOptions"
+                                WidthRequest="90"
+                                TextColor="White"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="BtnTipOptions_Clicked"/>
+                        <Button Text="Custom Tip"
+                                x:Name="btnCustomTip"
+                                WidthRequest="90"
+                                TextColor="White"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="BtnCustomTip_Clicked"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Tip Method Options -->
+
+                    <!-- Tip Options -->
+                    <Label Text="Tip: 0%" x:Name="lblTipPercentage"
+                           FontSize="16"
+                           TextColor="{StaticResource TextColor}"/>
+                    <HorizontalStackLayout x:Name="tipOptionsLayout" IsVisible="False" Spacing="10">
+                        <Button Text="10%" WidthRequest="90"
+                                TextColor="White" BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="Button_Clicked"/>
+                        <Button Text="15%" WidthRequest="90"
+                                TextColor="White" BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="Button_Clicked"/>
+                        <Button Text="20%" WidthRequest="90"
+                                TextColor="White" BackgroundColor="{StaticResource PrimaryColor}"
+                                Clicked="Button_Clicked"/>
+                    </HorizontalStackLayout>
+
+                    <!-- Slider -->
+                    <Slider Grid.Row="2"
+                            x:Name="sldTip"
+                            Maximum="100"
+                            Minimum="0"
+                            ValueChanged="sldTip_ValueChanged"
+                            ThumbColor="{StaticResource PinkColor}"
+                            IsVisible="False" />
+
+                    <!-- Custom Tip -->
+                    <Label Text="Custom Tip"
+                           FontSize="16"
+                           TextColor="{StaticResource TextColor}"
+                           IsVisible="False"/>
+
+                    <Entry x:Name="txtCustomTip"
+                           BackgroundColor="{StaticResource SectionsColor}"
+                           HeightRequest="50"
+                           TextColor="{StaticResource TextColor}"
+                           Placeholder="Enter custom tip"
+                           Keyboard="Numeric"
+                           IsVisible="False"
+                           Completed="txtCustomTip_Completed"/>
+
+                    <Label Text="Split the total between people" FontSize="16"
+                           TextColor="{StaticResource TextColor}"/>
+
+                    <HorizontalStackLayout Spacing="10"
+                                           HorizontalOptions="Center">
+                        <Button x:Name="btnMinus"
+                                Text="-"
+                                CornerRadius="12"
+                                WidthRequest="50"
+                                HeightRequest="40"
+                                Clicked="btnMinus_Clicked"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                TextColor="White"/>
+
+                        <Entry x:Name="lblNoPerson"
+                               WidthRequest="80"
+                               HeightRequest="40"
+                               Text="1"
+                               HorizontalTextAlignment="Center"
+                               BackgroundColor="{StaticResource SectionsColor}"
+                               TextColor="{StaticResource TextColor}"
+                               Keyboard="Numeric"
+                               Completed="lblNoPerson_Completed"/>
+
+                        <Button x:Name="btnPlus"
+                                Text="+"
+                                CornerRadius="12"
+                                WidthRequest="50"
+                                HeightRequest="40"
+                                Clicked="btnPlus_Clicked"
+                                BackgroundColor="{StaticResource PrimaryColor}"
+                                TextColor="White"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+    </ScrollView>
+</ContentPage>
